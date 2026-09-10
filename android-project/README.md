@@ -2,6 +2,8 @@
 
 This directory contains the standalone Android application packaging pipeline for OpenNox.
 
+Prebuilt APKs can be downloaded at: [https://boosty.to/gignorie](https://boosty.to/gignorie)
+
 ---
 
 ## Architecture

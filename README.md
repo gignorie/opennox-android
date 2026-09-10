@@ -4,6 +4,13 @@ Native Android port of **OpenNox**, the open-source community engine for Westwoo
 
 ---
 
+## 📥 Download & Support
+
+* 📦 **Prebuilt APK:** [Download on Boosty](https://boosty.to/gignorie)
+* ☕ **Support Development:** [boosty.to/gignorie](https://boosty.to/gignorie)
+
+---
+
 ## Overview
 
 This repository contains the full Android build environment, native SDL2/OpenAL integration, touch controls, and packaging pipeline for running OpenNox natively on Android devices.
@@ -73,7 +80,7 @@ The signed APK will be generated at `/root/opennox-android/opennox-armeabi-v7a.a
 ## Game Installation & Data Setup
 
 1. **Install the APK:**
-   Install `opennox-armeabi-v7a.apk` on your Android device.
+   Download the latest prebuilt `opennox-armeabi-v7a.apk` from [Boosty](https://boosty.to/gignorie) (or compile it following the steps above) and install it on your Android device.
 
 2. **Game Assets:**
    Copy the original game data directory (containing maps, audio, modifier, video, etc.) to:

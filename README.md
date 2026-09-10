@@ -7,7 +7,10 @@ Native Android port of **OpenNox**, the open-source community engine for Westwoo
 ## 📥 Download & Support
 
 * 📦 **Prebuilt APK:** [Download on Boosty](https://boosty.to/gignorie)
-* ☕ **Support Development:** [boosty.to/gignorie](https://boosty.to/gignorie)
+* ☕ **Boosty:** [boosty.to/gignorie](https://boosty.to/gignorie)
+* 💎 **Crypto Donations (USDT):**
+  * **USDT (TON):** `UQBPWSKGhTcl8rEXB2p7QR0xPHDZ5Y9Wn1T7YsnpvZP8yFMX`
+  * **USDT (TRC20):** `TC5QTt58Z5d39YiffBy1J5d6CgQSw3pGuV`
 
 ---
 

@@ -1,0 +1,30 @@
+extensions:
+    spells:
+        manual_cast:
+            timeout: 0.5
+game:
+    extensions:
+        reset_countdown_per_phoneme: false
+        solo_allow_emotes: true
+    serial: "7397161200657817495539"
+network:
+    lobby:
+        address: http://nox.nwca.xyz:8088
+    port_forward: true
+    xor: true
+    xwis:
+        register: true
+server:
+    api_token: ""
+    control:
+        allow_cmds: false
+        allow_map_change: false
+    maps:
+        default_chat: so_lod
+video:
+    filtering: true
+    gamma: 1
+    size:
+        height: 768
+        width: 1024
+    stretch: false

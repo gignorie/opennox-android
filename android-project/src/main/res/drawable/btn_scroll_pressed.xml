@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Outer Inset Shadow (Pressed) -->
+    <item android:top="1dp" android:left="1dp" android:right="1dp" android:bottom="1dp">
+        <shape android:shape="rectangle">
+            <corners android:radius="6dp" />
+            <solid android:color="#70000000" />
+        </shape>
+    </item>
+    <!-- Scroll Outer Frame (Golden Glow when pressed) -->
+    <item android:top="1dp" android:bottom="1dp">
+        <shape android:shape="rectangle">
+            <corners android:radius="6dp" />
+            <gradient
+                android:startColor="#b88e39"
+                android:centerColor="#7a5a23"
+                android:endColor="#3b290f"
+                android:angle="270" />
+            <stroke android:width="2dp" android:color="#ffd875" />
+        </shape>
+    </item>
+    <!-- Inner Scroll Parchment (Darker recessed) -->
+    <item android:top="3dp" android:left="16dp" android:right="16dp" android:bottom="3dp">
+        <shape android:shape="rectangle">
+            <corners android:radius="3dp" />
+            <gradient
+                android:startColor="#261a0a"
+                android:centerColor="#1a1105"
+                android:endColor="#291c0c"
+                android:angle="270" />
+            <stroke android:width="1dp" android:color="#8a692a" />
+        </shape>
+    </item>
+    <!-- Left Scroll Endcap Knob -->
+    <item android:left="4dp" android:top="4dp" android:bottom="4dp" android:width="10dp">
+        <shape android:shape="oval">
+            <gradient
+                android:startColor="#ffe082"
+                android:centerColor="#9e7b3a"
+                android:endColor="#3d2a0e"
+                android:type="radial"
+                android:gradientRadius="8dp" />
+            <stroke android:width="1dp" android:color="#fff0aa" />
+        </shape>
+    </item>
+    <!-- Right Scroll Endcap Knob -->
+    <item android:right="4dp" android:top="4dp" android:bottom="4dp" android:width="10dp" android:gravity="end">
+        <shape android:shape="oval">
+            <gradient
+                android:startColor="#ffe082"
+                android:centerColor="#9e7b3a"
+                android:endColor="#3d2a0e"
+                android:type="radial"
+                android:gradientRadius="8dp" />
+            <stroke android:width="1dp" android:color="#fff0aa" />
+        </shape>
+    </item>
+</layer-list>

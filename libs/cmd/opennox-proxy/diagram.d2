@@ -1,0 +1,23 @@
+direction: right
+
+cli1: Client 1 {
+    style: {stroke: "#f18f47"}
+}
+cli2: Client 2 {
+    style: {stroke: "#49bc99"}
+}
+
+proxy: Proxy {
+    port: Server port {}
+    cport1: Client port 1 {style: {stroke: "#f18f47"}}
+    cport2: Client port 2 {style: {stroke: "#49bc99"}}
+    port -> cport1 {style: {stroke: "#f18f47"}}
+    port -> cport2 {style: {stroke: "#49bc99"}}
+}
+cli1 -> proxy.port {style: {stroke: "#f18f47"}}
+cli2 -> proxy.port {style: {stroke: "#49bc99"}}
+
+nox: Nox Server {
+}
+proxy.cport1 -> nox {style: {stroke: "#f18f47"}}
+proxy.cport2 -> nox {style: {stroke: "#49bc99"}}

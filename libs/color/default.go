@@ -1,0 +1,25 @@
+package noxcolor
+
+var (
+	Black = RGB5551Color(0, 0, 0)
+	Gray1 = RGB5551Color(8, 8, 8)
+	Gray2 = RGB5551Color(115, 115, 115)
+	Gray3 = RGB5551Color(212, 212, 212)
+	White = RGB5551Color(255, 255, 255)
+
+	Red         = RGB5551Color(255, 0, 0)
+	Green       = RGB5551Color(0, 255, 0)
+	Blue        = RGB5551Color(0, 0, 255)
+	DarkRed     = RGB5551Color(100, 0, 0)
+	DarkGreen   = RGB5551Color(0, 100, 0)
+	DarkBlue    = RGB5551Color(0, 0, 140)
+	LightRed    = RGB5551Color(255, 128, 128)
+	LightGreen  = RGB5551Color(128, 255, 128)
+	LightBlue   = RGB5551Color(128, 128, 255)
+	Purple      = RGB5551Color(255, 0, 255)
+	LightPurple = RGB5551Color(255, 180, 255)
+	Yellow      = RGB5551Color(255, 255, 0)
+	LightYellow = RGB5551Color(255, 255, 128)
+	Cyan        = RGB5551Color(0, 160, 255)
+	Orange      = RGB5551Color(240, 180, 42)
+)

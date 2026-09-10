@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+    <id>io.github.noxworld_dev.OpenNox</id>
+
+    <name>OpenNox</name>
+    <summary>OpenNox is a modern implementation of a Nox game engine</summary>
+
+    <developer id="io.github.noxworld_dev">
+        <name>OpenNox team</name>
+    </developer>
+    <metadata_license>CC0-1.0</metadata_license>
+    <project_license>GPL-3.0-or-later</project_license>
+
+    <description>
+        <p>
+            OpenNox is a modern implementation of a Nox game engine.
+            It <em>requires a copy</em> of Nox game installed.
+            The best way to do so is to install GoG [1] version from Lutris [2].
+        </p>
+        <p>[1] https://www.gog.com/game/nox</p>
+        <p>[2] https://lutris.net/games/nox/</p>
+    </description>
+
+    <launchable type="desktop-id">io.github.noxworld_dev.OpenNox.desktop</launchable>
+    <screenshots>
+        <screenshot type="default">
+            <image>https://github.com/opennox/opennox-content/raw/main/screenshots/opennox-hd-1.jpg</image>
+            <caption>OpenNox HD</caption>
+        </screenshot>
+        <screenshot>
+            <image>https://github.com/opennox/opennox-content/raw/main/screenshots/opennox-hd-2.jpg</image>
+            <caption>OpenNox HD</caption>
+        </screenshot>
+        <screenshot>
+            <image>https://github.com/opennox/opennox-content/raw/main/screenshots/opennox-hd-3.jpg</image>
+            <caption>OpenNox HD</caption>
+        </screenshot>
+        <screenshot>
+            <image>https://github.com/opennox/opennox-content/raw/main/screenshots/opennox-hd-4.jpg</image>
+            <caption>OpenNox HD</caption>
+        </screenshot>
+        <screenshot>
+            <image>https://github.com/opennox/opennox-content/raw/main/screenshots/opennox-hd-5.jpg</image>
+            <caption>OpenNox HD</caption>
+        </screenshot>
+    </screenshots>
+    <url type="homepage">https://opennox.github.io/opennox-docs/</url>
+    <url type="bugtracker">https://github.com/opennox/opennox/issues</url>
+    <content_rating type="oars-1.1"/>
+    <releases>
+        <release version="v1.9.0-alpha13" date="2024-01-27"/>
+        <release version="v1.9.0-alpha12" date="2024-01-01"/>
+        <release version="v1.8.12-alpha11" date="2023-11-23"/>
+        <release version="v1.8.12-alpha10" date="2023-09-27"/>
+        <release version="v1.8.12-alpha9" date="2023-08-25"/>
+        <release version="v1.8.12-alpha8" date="2023-06-30"/>
+        <release version="v1.8.12-alpha7" date="2023-04-15"/>
+        <release version="v1.8.12-alpha6" date="2023-04-13"/>
+        <release version="v1.8.12-alpha5" date="2023-04-07"/>
+        <release version="v1.8.12-alpha4" date="2023-03-19"/>
+        <release version="v1.8.12-alpha3" date="2023-03-13"/>
+        <release version="v1.8.12-alpha2" date="2023-03-11"/>
+        <release version="v1.8.12-alpha1" date="2023-03-05"/>
+        <release version="v1.8.11" date="2022-06-29"/>
+        <release version="v1.8.10" date="2022-05-30"/>
+    </releases>
+</component>

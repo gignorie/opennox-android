@@ -1,0 +1,311 @@
+package spell
+
+func init() {
+	for i, id := range spellIDs {
+		spellIndByID[id] = ID(i)
+	}
+}
+
+// ParseID returns an ID for a given spell name. If the name is not recognized it returns SPELL_INVALID.
+func ParseID(id string) ID {
+	return spellIndByID[id]
+}
+
+// ID is an integer identifier of the spell, as used by Nox.
+type ID int
+
+// Valid check is the spell ID is valid.
+func (id ID) Valid() bool {
+	return id > 0 && int(id) < len(spellIDs)
+}
+
+// String returns an identifier of the spell. If spell is not valid, it returns an empty string.
+func (id ID) String() string {
+	if !id.Valid() && id != 0 {
+		return ""
+	}
+	return spellIDs[id]
+}
+
+const (
+	SPELL_INVALID                     = ID(0)
+	SPELL_ANCHOR                      = ID(1)
+	SPELL_ARACHNAPHOBIA               = ID(2)
+	SPELL_BLIND                       = ID(3)
+	SPELL_BLINK                       = ID(4)
+	SPELL_BURN                        = ID(5)
+	SPELL_CANCEL                      = ID(6)
+	SPELL_CHAIN_LIGHTNING_BOLT        = ID(7)
+	SPELL_CHANNEL_LIFE                = ID(8)
+	SPELL_CHARM                       = ID(9)
+	SPELL_CLEANSING_FLAME             = ID(10)
+	SPELL_CLEANSING_MANA_FLAME        = ID(11)
+	SPELL_CONFUSE                     = ID(12)
+	SPELL_COUNTERSPELL                = ID(13)
+	SPELL_CURE_POISON                 = ID(14)
+	SPELL_DEATH                       = ID(15)
+	SPELL_DEATH_RAY                   = ID(16)
+	SPELL_DETECT_MAGIC                = ID(17)
+	SPELL_DETONATE                    = ID(18)
+	SPELL_DETONATE_GLYPHS             = ID(19)
+	SPELL_DISENCHANT_ALL              = ID(20)
+	SPELL_TURN_UNDEAD                 = ID(21)
+	SPELL_DRAIN_MANA                  = ID(22)
+	SPELL_EARTHQUAKE                  = ID(23)
+	SPELL_LIGHTNING                   = ID(24)
+	SPELL_EXPLOSION                   = ID(25)
+	SPELL_FEAR                        = ID(26)
+	SPELL_FIREBALL                    = ID(27)
+	SPELL_FIREWALK                    = ID(28)
+	SPELL_FIST                        = ID(29)
+	SPELL_FORCE_FIELD                 = ID(30)
+	SPELL_FORCE_OF_NATURE             = ID(31)
+	SPELL_FREEZE                      = ID(32)
+	SPELL_FUMBLE                      = ID(33)
+	SPELL_GLYPH                       = ID(34)
+	SPELL_GREATER_HEAL                = ID(35)
+	SPELL_HASTE                       = ID(36)
+	SPELL_INFRAVISION                 = ID(37)
+	SPELL_INVERSION                   = ID(38)
+	SPELL_INVISIBILITY                = ID(39)
+	SPELL_INVULNERABILITY             = ID(40)
+	SPELL_LESSER_HEAL                 = ID(41)
+	SPELL_LIGHT                       = ID(42)
+	SPELL_CHAIN_LIGHTNING             = ID(43)
+	SPELL_LOCK                        = ID(44)
+	SPELL_MARK                        = ID(45)
+	SPELL_MARK_1                      = ID(46)
+	SPELL_MARK_2                      = ID(47)
+	SPELL_MARK_3                      = ID(48)
+	SPELL_MARK_4                      = ID(49)
+	SPELL_MAGIC_MISSILE               = ID(50)
+	SPELL_SHIELD                      = ID(51)
+	SPELL_METEOR                      = ID(52)
+	SPELL_METEOR_SHOWER               = ID(53)
+	SPELL_MOONGLOW                    = ID(54)
+	SPELL_NULLIFY                     = ID(55)
+	SPELL_MANA_BOMB                   = ID(56)
+	SPELL_PHANTOM                     = ID(57)
+	SPELL_PIXIE_SWARM                 = ID(58)
+	SPELL_PLASMA                      = ID(59)
+	SPELL_POISON                      = ID(60)
+	SPELL_PROTECTION_FROM_ELECTRICITY = ID(61)
+	SPELL_PROTECTION_FROM_FIRE        = ID(62)
+	SPELL_PROTECTION_FROM_MAGIC       = ID(63)
+	SPELL_PROTECTION_FROM_POISON      = ID(64)
+	SPELL_PULL                        = ID(65)
+	SPELL_PUSH                        = ID(66)
+	SPELL_OVAL_SHIELD                 = ID(67)
+	SPELL_RESTORE_HEALTH              = ID(68)
+	SPELL_RESTORE_MANA                = ID(69)
+	SPELL_RUN                         = ID(70)
+	SPELL_SHOCK                       = ID(71)
+	SPELL_SLOW                        = ID(72)
+	SPELL_SMALL_ZAP                   = ID(73)
+	SPELL_STUN                        = ID(74)
+	SPELL_SUMMON_BAT                  = ID(75)
+	SPELL_SUMMON_BLACK_BEAR           = ID(76)
+	SPELL_SUMMON_BEAR                 = ID(77)
+	SPELL_SUMMON_BEHOLDER             = ID(78)
+	SPELL_SUMMON_BOMBER               = ID(79)
+	SPELL_SUMMON_CARNIVOROUS_PLANT    = ID(80)
+	SPELL_SUMMON_ALBINO_SPIDER        = ID(81)
+	SPELL_SUMMON_SMALL_ALBINO_SPIDER  = ID(82)
+	SPELL_SUMMON_EVIL_CHERUB          = ID(83)
+	SPELL_SUMMON_EMBER_DEMON          = ID(84)
+	SPELL_SUMMON_GHOST                = ID(85)
+	SPELL_SUMMON_GIANT_LEECH          = ID(86)
+	SPELL_SUMMON_IMP                  = ID(87)
+	SPELL_SUMMON_MECHANICAL_FLYER     = ID(88)
+	SPELL_SUMMON_MECHANICAL_GOLEM     = ID(89)
+	SPELL_SUMMON_MIMIC                = ID(90)
+	SPELL_SUMMON_OGRE                 = ID(91)
+	SPELL_SUMMON_OGRE_BRUTE           = ID(92)
+	SPELL_SUMMON_OGRE_WARLORD         = ID(93)
+	SPELL_SUMMON_SCORPION             = ID(94)
+	SPELL_SUMMON_SHADE                = ID(95)
+	SPELL_SUMMON_SKELETON             = ID(96)
+	SPELL_SUMMON_SKELETON_LORD        = ID(97)
+	SPELL_SUMMON_SPIDER               = ID(98)
+	SPELL_SUMMON_SMALL_SPIDER         = ID(99)
+	SPELL_SUMMON_SPITTING_SPIDER      = ID(100)
+	SPELL_SUMMON_STONE_GOLEM          = ID(101)
+	SPELL_SUMMON_TROLL                = ID(102)
+	SPELL_SUMMON_URCHIN               = ID(103)
+	SPELL_SUMMON_WASP                 = ID(104)
+	SPELL_SUMMON_WILLOWISP            = ID(105)
+	SPELL_SUMMON_WOLF                 = ID(106)
+	SPELL_SUMMON_BLACK_WOLF           = ID(107)
+	SPELL_SUMMON_WHITE_WOLF           = ID(108)
+	SPELL_SUMMON_ZOMBIE               = ID(109)
+	SPELL_SUMMON_VILE_ZOMBIE          = ID(110)
+	SPELL_SUMMON_DEMON                = ID(111)
+	SPELL_SUMMON_LICH                 = ID(112)
+	SPELL_SUMMON_DRYAD                = ID(113)
+	SPELL_SUMMON_URCHIN_SHAMAN        = ID(114)
+	SPELL_SWAP                        = ID(115)
+	SPELL_TAG                         = ID(116)
+	SPELL_TELEPORT_OTHER_TO_MARK_1    = ID(117)
+	SPELL_TELEPORT_OTHER_TO_MARK_2    = ID(118)
+	SPELL_TELEPORT_OTHER_TO_MARK_3    = ID(119)
+	SPELL_TELEPORT_OTHER_TO_MARK_4    = ID(120)
+	SPELL_TELEPORT_POP                = ID(121)
+	SPELL_TELEPORT_TO_MARK_1          = ID(122)
+	SPELL_TELEPORT_TO_MARK_2          = ID(123)
+	SPELL_TELEPORT_TO_MARK_3          = ID(124)
+	SPELL_TELEPORT_TO_MARK_4          = ID(125)
+	SPELL_TELEPORT_TO_TARGET          = ID(126)
+	SPELL_TELEKINESIS                 = ID(127)
+	SPELL_TOXIC_CLOUD                 = ID(128)
+	SPELL_TRIGGER_GLYPH               = ID(129)
+	SPELL_VAMPIRISM                   = ID(130)
+	SPELL_VILLAIN                     = ID(131)
+	SPELL_WALL                        = ID(132)
+	SPELL_WINK                        = ID(133)
+	SPELL_SUMMON_CREATURE             = ID(134)
+	SPELL_MARK_LOCATION               = ID(135)
+	SPELL_TELEPORT_TO_MARKER          = ID(136)
+)
+
+var (
+	spellIndByID = make(map[string]ID)
+	spellIDs     = []string{
+		"SPELL_INVALID",
+		"SPELL_ANCHOR",
+		"SPELL_ARACHNAPHOBIA",
+		"SPELL_BLIND",
+		"SPELL_BLINK",
+		"SPELL_BURN",
+		"SPELL_CANCEL",
+		"SPELL_CHAIN_LIGHTNING_BOLT",
+		"SPELL_CHANNEL_LIFE",
+		"SPELL_CHARM",
+		"SPELL_CLEANSING_FLAME",
+		"SPELL_CLEANSING_MANA_FLAME",
+		"SPELL_CONFUSE",
+		"SPELL_COUNTERSPELL",
+		"SPELL_CURE_POISON",
+		"SPELL_DEATH",
+		"SPELL_DEATH_RAY",
+		"SPELL_DETECT_MAGIC",
+		"SPELL_DETONATE",
+		"SPELL_DETONATE_GLYPHS",
+		"SPELL_DISENCHANT_ALL",
+		"SPELL_TURN_UNDEAD",
+		"SPELL_DRAIN_MANA",
+		"SPELL_EARTHQUAKE",
+		"SPELL_LIGHTNING",
+		"SPELL_EXPLOSION",
+		"SPELL_FEAR",
+		"SPELL_FIREBALL",
+		"SPELL_FIREWALK",
+		"SPELL_FIST",
+		"SPELL_FORCE_FIELD",
+		"SPELL_FORCE_OF_NATURE",
+		"SPELL_FREEZE",
+		"SPELL_FUMBLE",
+		"SPELL_GLYPH",
+		"SPELL_GREATER_HEAL",
+		"SPELL_HASTE",
+		"SPELL_INFRAVISION",
+		"SPELL_INVERSION",
+		"SPELL_INVISIBILITY",
+		"SPELL_INVULNERABILITY",
+		"SPELL_LESSER_HEAL",
+		"SPELL_LIGHT",
+		"SPELL_CHAIN_LIGHTNING",
+		"SPELL_LOCK",
+		"SPELL_MARK",
+		"SPELL_MARK_1",
+		"SPELL_MARK_2",
+		"SPELL_MARK_3",
+		"SPELL_MARK_4",
+		"SPELL_MAGIC_MISSILE",
+		"SPELL_SHIELD",
+		"SPELL_METEOR",
+		"SPELL_METEOR_SHOWER",
+		"SPELL_MOONGLOW",
+		"SPELL_NULLIFY",
+		"SPELL_MANA_BOMB",
+		"SPELL_PHANTOM",
+		"SPELL_PIXIE_SWARM",
+		"SPELL_PLASMA",
+		"SPELL_POISON",
+		"SPELL_PROTECTION_FROM_ELECTRICITY",
+		"SPELL_PROTECTION_FROM_FIRE",
+		"SPELL_PROTECTION_FROM_MAGIC",
+		"SPELL_PROTECTION_FROM_POISON",
+		"SPELL_PULL",
+		"SPELL_PUSH",
+		"SPELL_OVAL_SHIELD",
+		"SPELL_RESTORE_HEALTH",
+		"SPELL_RESTORE_MANA",
+		"SPELL_RUN",
+		"SPELL_SHOCK",
+		"SPELL_SLOW",
+		"SPELL_SMALL_ZAP",
+		"SPELL_STUN",
+		"SPELL_SUMMON_BAT",
+		"SPELL_SUMMON_BLACK_BEAR",
+		"SPELL_SUMMON_BEAR",
+		"SPELL_SUMMON_BEHOLDER",
+		"SPELL_SUMMON_BOMBER",
+		"SPELL_SUMMON_CARNIVOROUS_PLANT",
+		"SPELL_SUMMON_ALBINO_SPIDER",
+		"SPELL_SUMMON_SMALL_ALBINO_SPIDER",
+		"SPELL_SUMMON_EVIL_CHERUB",
+		"SPELL_SUMMON_EMBER_DEMON",
+		"SPELL_SUMMON_GHOST",
+		"SPELL_SUMMON_GIANT_LEECH",
+		"SPELL_SUMMON_IMP",
+		"SPELL_SUMMON_MECHANICAL_FLYER",
+		"SPELL_SUMMON_MECHANICAL_GOLEM",
+		"SPELL_SUMMON_MIMIC",
+		"SPELL_SUMMON_OGRE",
+		"SPELL_SUMMON_OGRE_BRUTE",
+		"SPELL_SUMMON_OGRE_WARLORD",
+		"SPELL_SUMMON_SCORPION",
+		"SPELL_SUMMON_SHADE",
+		"SPELL_SUMMON_SKELETON",
+		"SPELL_SUMMON_SKELETON_LORD",
+		"SPELL_SUMMON_SPIDER",
+		"SPELL_SUMMON_SMALL_SPIDER",
+		"SPELL_SUMMON_SPITTING_SPIDER",
+		"SPELL_SUMMON_STONE_GOLEM",
+		"SPELL_SUMMON_TROLL",
+		"SPELL_SUMMON_URCHIN",
+		"SPELL_SUMMON_WASP",
+		"SPELL_SUMMON_WILLOWISP",
+		"SPELL_SUMMON_WOLF",
+		"SPELL_SUMMON_BLACK_WOLF",
+		"SPELL_SUMMON_WHITE_WOLF",
+		"SPELL_SUMMON_ZOMBIE",
+		"SPELL_SUMMON_VILE_ZOMBIE",
+		"SPELL_SUMMON_DEMON",
+		"SPELL_SUMMON_LICH",
+		"SPELL_SUMMON_DRYAD",
+		"SPELL_SUMMON_URCHIN_SHAMAN",
+		"SPELL_SWAP",
+		"SPELL_TAG",
+		"SPELL_TELEPORT_OTHER_TO_MARK_1",
+		"SPELL_TELEPORT_OTHER_TO_MARK_2",
+		"SPELL_TELEPORT_OTHER_TO_MARK_3",
+		"SPELL_TELEPORT_OTHER_TO_MARK_4",
+		"SPELL_TELEPORT_POP",
+		"SPELL_TELEPORT_TO_MARK_1",
+		"SPELL_TELEPORT_TO_MARK_2",
+		"SPELL_TELEPORT_TO_MARK_3",
+		"SPELL_TELEPORT_TO_MARK_4",
+		"SPELL_TELEPORT_TO_TARGET",
+		"SPELL_TELEKINESIS",
+		"SPELL_TOXIC_CLOUD",
+		"SPELL_TRIGGER_GLYPH",
+		"SPELL_VAMPIRISM",
+		"SPELL_VILLAIN",
+		"SPELL_WALL",
+		"SPELL_WINK",
+		"SPELL_SUMMON_CREATURE",
+		"SPELL_MARK_LOCATION",
+		"SPELL_TELEPORT_TO_MARKER",
+	}
+)

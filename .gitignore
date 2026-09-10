@@ -1,0 +1,27 @@
+# Game assets and data (copyrighted Westwood Studios assets)
+nox-data/
+data/
+logs/
+*.log
+
+# Built packages
+*.apk
+*.apk.idsig
+
+# Android packaging build intermediate outputs
+android-project/build/
+
+# Compiled Linux binaries in engine
+src/src/opennox
+src/src/opennox-hd
+src/src/opennox-server
+src/src/legacy/_obj/
+
+# Temporary / editor files
+*.tmp
+*.user
+.idea/
+.vscode/
+
+# Duplicate engine binary in packaging dir (copied from android-libs)
+android-project/lib/**/libmain.so

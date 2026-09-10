@@ -1,0 +1,9 @@
+prefix=/root/openal-soft
+includedir=/root/openal-soft/include
+libdir=/root/opennox-android/android-libs/armeabi-v7a
+
+Name: openal
+Description: OpenAL for Android
+Version: 1.23.1
+Libs: -L${libdir} -lopenal
+Cflags: -I${includedir} -I${includedir}/AL

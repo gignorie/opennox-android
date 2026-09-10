@@ -1,0 +1,8 @@
+.idea/
+out/
+.tmp/
+bag/*.png
+maps/*.png
+noxfont/*.png
+noximage/*.png
+*.zip

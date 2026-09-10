@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/nox_background"
+    android:padding="16dp">
+
+    <!-- Top Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginBottom="12dp">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/launcher_title"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="#f5d77f"
+            android:shadowColor="#000000"
+            android:shadowDx="2"
+            android:shadowDy="3"
+            android:shadowRadius="4"
+            android:letterSpacing="0.1" />
+
+        <TextView
+            android:id="@+id/tv_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/launcher_subtitle"
+            android:textSize="12sp"
+            android:textColor="#a38952"
+            android:letterSpacing="0.15" />
+    </LinearLayout>
+
+    <!-- Main Content Area: Left Status Panel, Right Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:baselineAligned="false">
+
+        <!-- Left Column: Status and Info Plaque -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.1"
+            android:orientation="vertical"
+            android:background="@drawable/nox_panel_bg"
+            android:padding="16dp"
+            android:layout_marginEnd="12dp">
+
+            <TextView
+                android:id="@+id/tv_status_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="СОСТОЯНИЕ ИГРЫ"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="#caa048"
+                android:shadowColor="#000000"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="2"
+                android:layout_marginBottom="8dp" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:fillViewport="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_status_message"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/status_missing"
+                        android:textSize="13sp"
+                        android:textColor="#e0d4c1"
+                        android:lineSpacingExtra="3dp" />
+
+                    <TextView
+                        android:id="@+id/tv_selected_path"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="/sdcard/OpenNox/"
+                        android:textSize="11sp"
+                        android:textColor="#8f7f68"
+                        android:fontFamily="monospace" />
+
+                    <!-- Unpack Progress Section (shown during extraction) -->
+                    <LinearLayout
+                        android:id="@+id/layout_progress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="12dp"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/tv_progress_info"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Распаковка архива..."
+                            android:textSize="12sp"
+                            android:textColor="#ffd56b"
+                            android:layout_marginBottom="6dp" />
+
+                        <ProgressBar
+                            android:id="@+id/progress_bar"
+                            style="?android:attr/progressBarStyleHorizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="14dp"
+                            android:progressDrawable="@drawable/nox_progress_bar"
+                            android:max="100"
+                            android:progress="0" />
+
+                        <TextView
+                            android:id="@+id/tv_progress_percent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginTop="4dp"
+                            android:text="0%"
+                            android:textSize="11sp"
+                            android:textColor="#e6cca1" />
+                    </LinearLayout>
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+
+        <!-- Right Column: 4 Nox-Style Scroll Buttons -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.9"
+            android:orientation="vertical"
+            android:gravity="center_vertical">
+
+            <!-- Button 1: Select Game Folder -->
+            <Button
+                android:id="@+id/btn_select_folder"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/btn_nox_scroll"
+                android:text="@string/btn_select_folder"
+                android:textColor="@color/btn_nox_text"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:shadowColor="#000000"
+                android:shadowDx="1"
+                android:shadowDy="2"
+                android:shadowRadius="2"
+                android:paddingStart="18dp"
+                android:paddingEnd="18dp" />
+
+            <!-- Button 2: Unpack Nox Archive -->
+            <Button
+                android:id="@+id/btn_unpack_archive"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/btn_nox_scroll"
+                android:text="@string/btn_unpack_archive"
+                android:textColor="@color/btn_nox_text"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:shadowColor="#000000"
+                android:shadowDx="1"
+                android:shadowDy="2"
+                android:shadowRadius="2"
+                android:paddingStart="18dp"
+                android:paddingEnd="18dp" />
+
+            <!-- Button 3: Community & Guides -->
+            <Button
+                android:id="@+id/btn_community"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/btn_nox_scroll"
+                android:text="@string/btn_community_guides"
+                android:textColor="@color/btn_nox_text"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:shadowColor="#000000"
+                android:shadowDx="1"
+                android:shadowDy="2"
+                android:shadowRadius="2"
+                android:paddingStart="18dp"
+                android:paddingEnd="18dp" />
+
+            <!-- Button 4: Launch Game -->
+            <Button
+                android:id="@+id/btn_launch_game"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/btn_nox_scroll"
+                android:text="@string/btn_launch_game"
+                android:textColor="@color/btn_nox_text"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:shadowColor="#000000"
+                android:shadowDx="1"
+                android:shadowDy="2"
+                android:shadowRadius="3"
+                android:enabled="false"
+                android:paddingStart="18dp"
+                android:paddingEnd="18dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Bottom Footer -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="OpenNox Android • Westwood Studios Nox (2000)"
+        android:textSize="10sp"
+        android:textColor="#5e503f" />
+
+</LinearLayout>

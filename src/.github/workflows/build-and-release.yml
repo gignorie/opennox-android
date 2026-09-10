@@ -1,0 +1,466 @@
+name: Build and release
+on:
+  push:
+    branches:
+      - main
+      - master
+      - dev
+      - ci_tests
+      - dennwc
+    tags:
+      - '*'
+  pull_request:
+    branches:
+      - main
+      - master
+      - dev
+
+env:
+  DOCKER_IMAGE_NAME: ghcr.io/opennox/opennox
+
+jobs:
+  hybrid_docker_mingw:
+    # Cross compile Windows binaries with mingw on ArchLinux-based Linux environment
+    name: Cross compile for Windows
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          submodules: true
+
+      - name: Get go cache
+        uses: actions/cache@v3
+        with:
+          path: gocache
+          key: mingw-gocache-v3-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            mingw-gocache-v3-
+
+      - uses: docker://ghcr.io/opennox/docker-build:latest-win
+        name: Docker build
+
+      - uses: actions/upload-artifact@v3
+        name: Upload artifacts
+        if: startsWith(github.ref, 'refs/tags/') || (github.ref == 'refs/heads/dev') || (github.ref == 'refs/heads/ci_tests')
+        with:
+          name: opennox-win
+          path: |
+            build/opennox.exe
+            build/opennox-hd.exe
+            build/opennox-debug.exe
+            build/opennox-debug-hd.exe
+            build/opennox-server.exe
+            build/*.dll
+          if-no-files-found: error
+          retention-days: 1
+
+  hybrid_docker_win7:
+    # Cross compile Windows binaries with downgraded Go toolkit
+    name: Cross compile for Windows (Win7 compatible)
+    runs-on: ubuntu-latest
+    if: false # TODO
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          submodules: true
+
+      - name: Get go cache
+        uses: actions/cache@v3
+        with:
+          path: gocache
+          key: mingw-win7-gocache-v3-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            mingw-win7-gocache-v3-
+
+      - uses: docker://ghcr.io/opennox/docker-build:win-go1.21.4
+        name: Docker build
+        env:
+          GOTOOLCHAIN: local
+
+      - uses: actions/upload-artifact@v3
+        name: Upload artifacts
+        if: startsWith(github.ref, 'refs/tags/') || (github.ref == 'refs/heads/dev') || (github.ref == 'refs/heads/ci_tests')
+        with:
+          name: opennox-win7
+          path: |
+            build/opennox.exe
+            build/opennox-hd.exe
+            build/opennox-debug.exe
+            build/opennox-debug-hd.exe
+            build/opennox-server.exe
+            build/*.dll
+          if-no-files-found: error
+          retention-days: 1
+
+  linux_docker:
+    # Compile Linux binaries with a golang docker container
+    name: Compile for Linux
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          submodules: true
+
+      - name: Get go cache
+        uses: actions/cache@v3
+        with:
+          path: gocache
+          key: linux-gocache-v3-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            linux-gocache-v3-
+
+      - uses: docker://ghcr.io/opennox/docker-build:latest-linux
+        name: Docker build
+
+      - uses: actions/upload-artifact@v3
+        name: Upload artifacts
+        if: startsWith(github.ref, 'refs/tags/') || (github.ref == 'refs/heads/dev') || (github.ref == 'refs/heads/ci_tests')
+        with:
+          name: opennox-linux
+          path: |
+            build/opennox
+            build/opennox-hd
+            build/opennox-server
+          if-no-files-found: error
+          retention-days: 1
+
+  snapcraft_linux:
+    name: Go build for Snapcraft
+    runs-on: 'ubuntu-20.04'
+    if: startsWith(github.ref, 'refs/tags/v') || (github.ref == 'refs/heads/dev')
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          submodules: true
+      - name: 'Build Snap package'
+        uses: snapcore/action-build@v1
+        id: snapcraft
+        with:
+          snapcraft-channel: '7.x'
+#      - name: 'Upload the package'
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: opennox-snap
+#          path: ${{ steps.snapcraft.outputs.snap }}
+      - name: 'Publish to edge channel'
+        uses: snapcore/action-publish@v1
+        if: github.ref == 'refs/heads/dev'
+        env:
+          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
+        with:
+          snap: ${{ steps.snapcraft.outputs.snap }}
+          release: edge
+      - name: 'Publish to stable channel'
+        uses: snapcore/action-publish@v1
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
+        with:
+          snap: ${{ steps.snapcraft.outputs.snap }}
+          release: stable
+
+  docker_server:
+    name: Docker server build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/') || (github.ref == 'refs/heads/dev') || (github.ref == 'refs/heads/ci_tests')
+    strategy:
+      fail-fast: true
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          submodules: true
+
+      - name: Docker build
+        run: |
+          make build-server-docker
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        if: startsWith(github.ref, 'refs/tags/') || (github.ref == 'refs/heads/dev')
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push latest
+        if: github.ref == 'refs/heads/dev'
+        run: |
+          docker push $DOCKER_IMAGE_NAME:dev
+
+      - name: Push tagged
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          export VERSION=$(git name-rev --tags --name-only $(git rev-parse HEAD))
+          docker tag $DOCKER_IMAGE_NAME:dev $DOCKER_IMAGE_NAME:${VERSION}
+          docker push $DOCKER_IMAGE_NAME:${VERSION}
+
+      - name: Push latest
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          docker tag $DOCKER_IMAGE_NAME:dev $DOCKER_IMAGE_NAME:latest
+          docker push $DOCKER_IMAGE_NAME:latest
+
+  docker_server_demo:
+    name: Docker server build (demo)
+    runs-on: ubuntu-latest
+    if: false # TODO: Internet Archive is down, can't download demo installer
+#    if: startsWith(github.ref, 'refs/tags/') || (github.ref == 'refs/heads/dev') || (github.ref == 'refs/heads/ci_tests')
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          submodules: true
+
+      - name: Docker build
+        run: |
+          make build-server-demo-docker
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        if: startsWith(github.ref, 'refs/tags/') || (github.ref == 'refs/heads/dev')
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push latest
+        if: github.ref == 'refs/heads/dev'
+        run: |
+          docker push $DOCKER_IMAGE_NAME:dev-demo
+
+      - name: Push tagged
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          export VERSION=$(git name-rev --tags --name-only $(git rev-parse HEAD))
+          docker tag $DOCKER_IMAGE_NAME:dev-demo $DOCKER_IMAGE_NAME:${VERSION}-demo
+          docker push $DOCKER_IMAGE_NAME:${VERSION}-demo
+
+      - name: Push latest
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          docker tag $DOCKER_IMAGE_NAME:dev-demo $DOCKER_IMAGE_NAME:demo
+          docker push $DOCKER_IMAGE_NAME:demo
+
+  release_repackage_linux_gzip:
+    name: Repackage Linux release (tar.gz)
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/') || (github.ref == 'refs/heads/ci_tests')
+    needs: [linux_docker]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          submodules: true
+
+      - name: Cleanup
+        run: |
+          rm -rf /tmp/linux-tmp
+          mkdir -p /tmp/linux-tmp
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: opennox-linux
+          path: /tmp/linux-tmp/
+
+      - name: Repackage release
+        run: |
+          ls -lh /tmp/linux-tmp/
+
+          rm -rf /tmp/opennox-linux
+          mkdir -p /tmp/opennox-linux
+          cp /tmp/linux-tmp/* /tmp/opennox-linux
+          cp ./CHANGELOG.md /tmp/opennox-linux
+
+          export VERSION=$(git name-rev --tags --name-only $(git rev-parse HEAD))
+          cd /tmp/opennox-linux
+          rm -rf /tmp/opennox-linux-release
+          mkdir -p /tmp/opennox-linux-release
+          tar -czf /tmp/opennox-linux-release/OpenNox-linux-$VERSION.tar.gz ./*
+
+      - name: Upload the archive
+        uses: actions/upload-artifact@v3
+        with:
+          name: opennox-release-linux-tgz
+          path: /tmp/opennox-linux-release/OpenNox-linux-*.tar.gz
+          if-no-files-found: error
+
+  release_repackage_linux_appimage:
+    name: Repackage Linux release (AppImage)
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/') || (github.ref == 'refs/heads/appimage-workflow-test') || (github.ref == 'refs/heads/ci_tests')
+    needs: [linux_docker]
+    steps:
+      - uses: actions/download-artifact@v3
+        name: Retrieving compiled OpenNox
+        with:
+          name: opennox-linux
+          path: build
+
+      - uses: docker://ghcr.io/opennox/docker-build:latest-linux-packaging-appimage
+        name: Using docker build - latest-linux-packaging-appimage
+
+      - uses: actions/upload-artifact@v3
+        name: Upload the AppImage
+        if: startsWith(github.ref, 'refs/tags/') || (github.ref == 'refs/heads/appimage-workflow-test') || (github.ref == 'refs/heads/ci_tests')
+        with:
+          name: opennox-release-linux-appimage
+          path: |
+            build/opennox-bundle-i386.AppImage
+          if-no-files-found: error
+          retention-days: 1
+
+  release_repackage_win:
+      name: Repackage Windows release
+      runs-on: ubuntu-latest
+      if: startsWith(github.ref, 'refs/tags/') || (github.ref == 'refs/heads/ci_tests')
+      needs: [hybrid_docker_mingw]
+      steps:
+        - name: Install NSIS
+          run: sudo apt-get install -y nsis
+
+        - uses: actions/checkout@v3
+          with:
+            fetch-depth: 0
+            submodules: true
+
+        - name: Cleanup
+          run: |
+            rm -rf /tmp/win-tmp
+            mkdir -p /tmp/win-tmp
+
+        - uses: actions/download-artifact@v3
+          with:
+            name: opennox-win
+            path: /tmp/win-tmp/
+
+        - name: Repackage release
+          run: |
+            ls -lh /tmp/win-tmp/
+            rm -rf /tmp/opennox-win
+            mkdir -p /tmp/opennox-win
+            cp /tmp/win-tmp/*.exe /tmp/opennox-win/
+            cp /tmp/win-tmp/*.dll /tmp/opennox-win/
+            cp ./CHANGELOG.md /tmp/opennox-win/
+
+            rm -rf /tmp/opennox-win-release
+            mkdir -p /tmp/opennox-win-release
+            export VERSION=$(git name-rev --tags --name-only $(git rev-parse HEAD))
+            makensis -DVERSION="$VERSION" -DDATA="/tmp/opennox-win/" -DOUTDIR="/tmp/opennox-win-release/" ./scripts/opennox.nsi
+
+            cd /tmp/opennox-win
+            zip -9 -r /tmp/opennox-win-release/OpenNox-$VERSION.zip ./*
+
+        - name: Upload the archive
+          uses: actions/upload-artifact@v3
+          with:
+            name: opennox-release-win
+            path: |
+              /tmp/opennox-win-release/OpenNox-*.zip
+              /tmp/opennox-win-release/OpenNox-*.exe
+            if-no-files-found: error
+
+  release_repackage_win7:
+      name: Repackage Windows release (Win7 compatible)
+      runs-on: ubuntu-latest
+      if: startsWith(github.ref, 'refs/tags/') || (github.ref == 'refs/heads/ci_tests')
+      needs: [hybrid_docker_win7]
+      steps:
+        - name: Install NSIS
+          run: sudo apt-get install -y nsis
+
+        - uses: actions/checkout@v3
+          with:
+            fetch-depth: 0
+            submodules: true
+
+        - name: Cleanup
+          run: |
+            rm -rf /tmp/win-tmp
+            mkdir -p /tmp/win-tmp
+
+        - uses: actions/download-artifact@v3
+          with:
+            name: opennox-win7
+            path: /tmp/win-tmp/
+
+        - name: Repackage release
+          run: |
+            ls -lh /tmp/win-tmp/
+            rm -rf /tmp/opennox-win
+            mkdir -p /tmp/opennox-win
+            cp /tmp/win-tmp/*.exe /tmp/opennox-win/
+            cp /tmp/win-tmp/*.dll /tmp/opennox-win/
+            cp ./CHANGELOG.md /tmp/opennox-win/
+
+            rm -rf /tmp/opennox-win-release
+            mkdir -p /tmp/opennox-win-release
+            export VERSION=$(git name-rev --tags --name-only $(git rev-parse HEAD))
+            makensis -DVERSION="win7-$VERSION" -DDATA="/tmp/opennox-win/" -DOUTDIR="/tmp/opennox-win-release/" ./scripts/opennox.nsi
+
+            cd /tmp/opennox-win
+            zip -9 -r /tmp/opennox-win-release/OpenNox-win7-$VERSION.zip ./*
+
+        - name: Upload the archive
+          uses: actions/upload-artifact@v3
+          with:
+            name: opennox-release-win7
+            path: |
+              /tmp/opennox-win-release/OpenNox-win7-*.zip
+              /tmp/opennox-win-release/OpenNox-win7-*.exe
+            if-no-files-found: error
+
+  github_release:
+    name: Github release
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: [release_repackage_linux_appimage, release_repackage_linux_gzip, release_repackage_win, release_repackage_win7]
+    steps:
+      - name: Cleanup
+        run: |
+          rm -rf /tmp/release-tmp
+          mkdir -p /tmp/release-tmp
+
+      - uses: actions/download-artifact@v3
+        name: Preparing Linux (tar.gz) file for release.
+        with:
+          name: opennox-release-linux-tgz
+          path: /tmp/release-tmp/
+
+      - uses: actions/download-artifact@v3
+        name: Preparing Linux (AppImage) file for release.
+        with:
+          name: opennox-release-linux-appimage
+          path: /tmp/release-tmp/
+
+      - uses: actions/download-artifact@v3
+        name: Preparing Windows (NSIS installer, Zip archive) files for release.
+        with:
+          name: opennox-release-win
+          path: /tmp/release-tmp/
+
+      - uses: actions/download-artifact@v3
+        name: Preparing Windows (Win7 compatible) (NSIS installer, Zip archive) files for release.
+        with:
+          name: opennox-release-win7
+          path: /tmp/release-tmp/
+
+      - name: Releasing prepared files.
+        uses: softprops/action-gh-release@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body: |
+            TODO: changelog
+          draft: true
+          fail_on_unmatched_files: true
+          files: |
+            /tmp/release-tmp/opennox-bundle-i386.AppImage
+            /tmp/release-tmp/OpenNox-linux-*.tar.gz
+            /tmp/release-tmp/OpenNox-*.zip
+            /tmp/release-tmp/OpenNox-*.exe

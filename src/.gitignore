@@ -1,0 +1,37 @@
+build/
+.flatpak-builder/
+CMakeFiles/
+.tmp
+.testOut
+tmp/
+docs-dev/
+logs
+*.log
+*.user
+*.o
+*.exe
+*.wasm
+src/**/*.png
+src/*.dat
+src/*.dat.gz
+cmake-*
+
+# For JetBrains IDEs
+.idea
+src/.idea
+src/cmake-build-*
+
+# For LiteIDE
+.project
+
+# For VS IDE
+.vs/
+.vscode/
+
+# Omit external libraries
+src/external
+# Omit include replacements made for source analysis
+src/includes
+# Omit other source analysis dirs
+gonox/
+gonoxh/

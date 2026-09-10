@@ -1,0 +1,9 @@
+prefix=/root/SDL2
+includedir=/root/SDL2/include
+libdir=/root/opennox-android/android-libs/armeabi-v7a
+
+Name: sdl2
+Description: Simple DirectMedia Layer for Android
+Version: 2.33.0
+Libs: -L${libdir} -lSDL2
+Cflags: -I${includedir} -I${includedir}/SDL2

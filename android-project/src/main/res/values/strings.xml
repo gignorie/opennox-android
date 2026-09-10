@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">OpenNox</string>
+    <string name="launcher_title">OPENNOX</string>
+    <string name="launcher_subtitle">СТАРТОВЫЙ ЛАУНЧЕР</string>
+    <string name="btn_select_folder">Выбрать папку с игрой</string>
+    <string name="btn_unpack_archive">Распаковать архив Nox.zip</string>
+    <string name="btn_community_guides">Сообщество и гайды</string>
+    <string name="btn_launch_game">Запустить игру</string>
+    <string name="status_missing">Файлы игры не найдены. Выберите папку или распакуйте архив Nox.zip в /sdcard/OpenNox/</string>
+    <string name="status_found">Файлы игры обнаружены: %1$s</string>
+</resources>

@@ -1,0 +1,60 @@
+FROM golang:1.25-trixie AS builder
+
+ARG UID=1000
+ARG GID=1000
+ARG GIT_SHA=""
+ARG GIT_TAG=""
+
+RUN dpkg --add-architecture i386 && \
+    apt-get update && \
+    apt-get install -y \
+                        gcc gcc-multilib
+
+RUN groupadd --gid $GID runner && \
+    useradd --home-dir /home/runner --no-create-home --gid runner --uid $UID --shell /bin/sh runner
+
+WORKDIR /home/runner/opennox
+
+ADD ./go.* ./
+
+RUN go mod download
+
+ADD . .
+
+RUN go run ./internal/noxbuild server && ./opennox-server -h
+
+
+FROM debian:trixie AS server
+
+RUN dpkg --add-architecture i386 && \
+    apt update && \
+    apt upgrade -y && \
+    apt install -y libc6:i386 ca-certificates && \
+    apt-get autoremove -y && apt-get clean -y cache
+
+COPY --from=builder /home/runner/opennox/opennox-server /usr/bin/opennox-server
+
+RUN opennox-server -h
+
+VOLUME /nox/
+
+EXPOSE 22/tcp
+EXPOSE 18590/udp
+EXPOSE 18590/tcp
+EXPOSE 6060/tcp
+
+WORKDIR /nox/
+ENTRYPOINT ["opennox-server", "--rcon=:22"]
+
+FROM server AS demo
+
+RUN apt update && \
+    apt upgrade -y && \
+    apt install -y curl unzip cabextract && \
+    apt-get autoremove -y && apt-get clean -y cache
+
+ADD --checksum=sha256:ba01f1b43ff1d95f4cd2ab63abe4572e9b26ab22f1b7bd8b99d852fba6607eec https://archive.org/download/NoxDemo/noxdemo.exe /tmp/noxdemo.exe
+RUN unzip /tmp/noxdemo.exe -d /tmp/noxdemo && rm /tmp/noxdemo.exe
+
+RUN cabextract /tmp/noxdemo/Install/Game1.CAB -d /nox && rm -rf /tmp/noxdemo
+ENV NOX_CHAT_MAP=so_woods

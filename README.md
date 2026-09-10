@@ -1,4 +1,4 @@
-# OpenNox for Android
+# <img src="icon.png" width="44" height="44" valign="middle" alt="OpenNox Icon" /> OpenNox for Android
 
 Native Android port of **OpenNox**, the open-source community engine for Westwood Studios' classic ARPG **Nox** (2000).
 

@@ -2,6 +2,9 @@
 
 Native Android port of **OpenNox**, the open-source community engine for Westwood Studios' classic ARPG **Nox** (2000).
 
+> [!NOTE]
+> This is an unofficial fan port. No copyrighted game assets are included. You must provide your own Nox data files (e.g. from GOG).
+
 ---
 
 ## 📥 Download & Support
@@ -86,6 +89,8 @@ The signed APK will be generated at `/root/opennox-android/opennox-armeabi-v7a.a
    Download the latest prebuilt `opennox-armeabi-v7a.apk` from [Boosty](https://boosty.to/gignorie) (or compile it following the steps above) and install it on your Android device.
 
 2. **Game Assets:**
+   *Note: This is an unofficial fan port. No copyrighted game assets are included. You must provide your own Nox data files (e.g. from GOG).*
+
    Copy the original game data directory (containing maps, audio, modifier, video, etc.) to:
    ```
    /sdcard/opennox/

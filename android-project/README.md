@@ -4,6 +4,8 @@ This directory contains the standalone Android application packaging pipeline fo
 
 Prebuilt APKs can be downloaded at: [https://boosty.to/gignorie](https://boosty.to/gignorie)
 
+> **Note:** This is an unofficial fan port. No copyrighted game assets are included. You must provide your own Nox data files (e.g. from GOG).
+
 ---
 
 ## Architecture
